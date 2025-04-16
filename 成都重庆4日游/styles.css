@@ -1,0 +1,356 @@
+/* 页面基础设置 - A4尺寸 */
+:root {
+    --primary-color: #3a6ea5;
+    --secondary-color: #f28c28;
+    --sight-color: #6fb3ce;
+    --food-color: #e66767;
+    --transport-color: #5c9e5c;
+    --hotel-color: #9966cc;
+    --border-color: #e0e0e0;
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --light-gray: #f5f5f5;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Noto Sans SC', sans-serif;
+    background-color: #f0f0f0;
+    color: var(--text-color);
+    line-height: 1.6;
+}
+
+/* A4纸尺寸设置 */
+.a4-page {
+    width: 210mm;
+    height: 297mm;
+    margin: 20px auto;
+    padding: 10mm;
+    background-color: var(--background-color);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* 剪裁线 */
+.crop-marks::before,
+.crop-marks::after {
+    content: '';
+    position: absolute;
+    border-style: dashed;
+    border-color: #ccc;
+    border-width: 1px;
+}
+
+.crop-marks::before {
+    top: 5mm;
+    bottom: 5mm;
+    left: 5mm;
+    right: 5mm;
+    border-width: 0;
+}
+
+/* 标题区域 */
+.header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--primary-color);
+    position: relative;
+}
+
+.title {
+    font-size: 24px;
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    text-align: center;
+    position: relative;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #666;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* 城市图标 */
+.city-icons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 5px;
+    left: 0;
+    right: 0;
+    opacity: 0.2;
+    z-index: 0;
+}
+
+.city-icon {
+    font-size: 24px;
+    color: var(--primary-color);
+}
+
+/* 天气信息 */
+.weather-summary {
+    display: flex;
+    justify-content: space-around;
+    margin: 10px 0;
+    padding: 8px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+}
+
+.weather-day {
+    text-align: center;
+}
+
+.weather-date {
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.weather-icon {
+    font-size: 18px;
+    margin: 3px 0;
+    color: var(--primary-color);
+}
+
+.weather-temp {
+    font-size: 12px;
+}
+
+/* 行程概览 */
+.overview {
+    margin-bottom: 15px;
+}
+
+.overview-title {
+    font-size: 16px;
+    color: var(--primary-color);
+    margin-bottom: 8px;
+    padding-left: 8px;
+    border-left: 4px solid var(--primary-color);
+}
+
+.overview-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.overview-day {
+    background-color: var(--light-gray);
+    padding: 8px;
+    border-radius: 4px;
+    border-top: 3px solid var(--primary-color);
+}
+
+.overview-day-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.overview-day-content {
+    font-size: 12px;
+    list-style-type: none;
+}
+
+.overview-day-content li {
+    margin-bottom: 3px;
+    display: flex;
+    align-items: baseline;
+}
+
+.overview-day-content i {
+    margin-right: 5px;
+    width: 14px;
+    text-align: center;
+}
+
+/* 详细行程表 */
+.timeline-container {
+    margin-bottom: 15px;
+}
+
+.timeline {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+}
+
+.timeline th {
+    background-color: var(--primary-color);
+    color: white;
+    text-align: left;
+    padding: 6px 10px;
+}
+
+.timeline td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: top;
+}
+
+.timeline tr:nth-child(even) {
+    background-color: var(--light-gray);
+}
+
+.time-cell {
+    width: 15%;
+    white-space: nowrap;
+    font-weight: 500;
+}
+
+.activity-cell {
+    width: 30%;
+}
+
+.location-cell {
+    width: 25%;
+}
+
+.detail-cell {
+    width: 30%;
+}
+
+/* 标签样式 */
+.tag {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-right: 5px;
+    color: white;
+}
+
+.tag-sight {
+    background-color: var(--sight-color);
+}
+
+.tag-food {
+    background-color: var(--food-color);
+}
+
+.tag-transport {
+    background-color: var(--transport-color);
+}
+
+.tag-hotel {
+    background-color: var(--hotel-color);
+}
+
+/* 底部区域 */
+.footer {
+    display: flex;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.info-box {
+    flex: 1;
+    padding: 10px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.info-box-title {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+}
+
+.info-box-title i {
+    margin-right: 5px;
+}
+
+.info-box ul {
+    list-style-type: none;
+}
+
+.info-box li {
+    margin-bottom: 3px;
+}
+
+/* 实用信息区域 */
+.important-info {
+    margin-top: 15px;
+    font-size: 12px;
+    display: flex;
+    gap: 15px;
+}
+
+.tips-list {
+    flex: 3;
+    padding: 10px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+}
+
+.emergency-list {
+    flex: 1;
+    padding: 10px;
+    background-color: var(--light-gray);
+    border-radius: 4px;
+}
+
+/* 打印按钮 */
+.print-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Noto Sans SC', sans-serif;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.print-button:hover {
+    background-color: #2a5a8a;
+    transform: translateY(-2px);
+}
+
+/* 打印样式 */
+@media print {
+    body {
+        background-color: white;
+    }
+    
+    .a4-page {
+        box-shadow: none;
+        margin: 0;
+        padding: 10mm;
+        width: 210mm;
+        height: 297mm;
+    }
+    
+    .crop-marks {
+        display: none;
+    }
+    
+    .print-button {
+        display: none;
+    }
+} 

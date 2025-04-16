@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>成都-重庆四天三晚旅行规划表</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* 页面基础设置 - A4尺寸 */
+        :root {
+            --primary-color: #3a6ea5;
+            --secondary-color: #f28c28;
+            --sight-color: #6fb3ce;
+            --food-color: #e66767;
+            --transport-color: #5c9e5c;
+            --hotel-color: #9966cc;
+            --border-color: #e0e0e0;
+            --background-color: #ffffff;
+            --text-color: #333333;
+            --light-gray: #f5f5f5;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #f0f0f0;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* A4纸尺寸设置 */
+        .a4-page {
+            width: 210mm;
+            height: 297mm;
+            margin: 20px auto;
+            padding: 10mm;
+            background-color: var(--background-color);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 剪裁线 */
+        .crop-marks::before,
+        .crop-marks::after {
+            content: '';
+            position: absolute;
+            border-style: dashed;
+            border-color: #ccc;
+            border-width: 1px;
+        }
+        
+        .crop-marks::before {
+            top: 5mm;
+            bottom: 5mm;
+            left: 5mm;
+            right: 5mm;
+            border-width: 0;
+        }
+        
+        /* 标题区域 */
+        .header {
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            position: relative;
+        }
+        
+        .title {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .subtitle {
+            font-size: 14px;
+            color: #666;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        /* 城市图标 */
+        .city-icons {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .city-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+        }
+        
+        /* 天气信息 */
+        .weather-summary {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+            padding: 8px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .weather-day {
+            text-align: center;
+        }
+        
+        .weather-date {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .weather-icon {
+            font-size: 18px;
+            margin: 3px 0;
+        }
+        
+        .weather-temp {
+            font-size: 12px;
+        }
+        
+        /* 行程概览 */
+        .overview {
+            margin-bottom: 15px;
+        }
+        
+        .overview-title {
+            font-size: 16px;
+            color: var(--primary-color);
+            margin-bottom: 8px;
+            padding-left: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+        
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        
+        .overview-day {
+            background-color: var(--light-gray);
+            padding: 8px;
+            border-radius: 4px;
+            border-top: 3px solid var(--primary-color);
+        }
+        
+        .overview-day-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+        
+        .overview-day-content {
+            font-size: 12px;
+            list-style-type: none;
+        }
+        
+        .overview-day-content li {
+            margin-bottom: 3px;
+            display: flex;
+            align-items: baseline;
+        }
+        
+        .overview-day-content i {
+            margin-right: 5px;
+            width: 14px;
+            text-align: center;
+        }
+        
+        /* 详细行程表 */
+        .timeline-container {
+            margin-bottom: 15px;
+        }
+        
+        .timeline {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 12px;
+        }
+        
+        .timeline th {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: left;
+            padding: 6px 10px;
+        }
+        
+        .timeline td {
+            padding: 6px 10px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
+        }
+        
+        .timeline tr:nth-child(even) {
+            background-color: var(--light-gray);
+        }
+        
+        .time-cell {
+            width: 15%;
+            white-space: nowrap;
+            font-weight: 500;
+        }
+        
+        .activity-cell {
+            width: 30%;
+        }
+        
+        .location-cell {
+            width: 25%;
+        }
+        
+        .detail-cell {
+            width: 30%;
+        }
+        
+        /* 标签样式 */
+        .tag {
+            display: inline-block;
+            font-size: 10px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            margin-right: 5px;
+            color: white;
+        }
+        
+        .tag-sight {
+            background-color: var(--sight-color);
+        }
+        
+        .tag-food {
+            background-color: var(--food-color);
+        }
+        
+        .tag-transport {
+            background-color: var(--transport-color);
+        }
+        
+        .tag-hotel {
+            background-color: var(--hotel-color);
+        }
+        
+        /* 底部区域 */
+        .footer {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .info-box {
+            flex: 1;
+            padding: 10px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .info-box-title {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 5px;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+        }
+        
+        .info-box-title i {
+            margin-right: 5px;
+        }
+        
+        .info-box ul {
+            list-style-type: none;
+        }
+        
+        .info-box li {
+            margin-bottom: 3px;
+        }
+        
+        /* 实用信息区域 */
+        .important-info {
+            margin-top: 15px;
+            font-size: 12px;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .tips-list {
+            flex: 3;
+            padding: 10px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        .emergency-list {
+            flex: 1;
+            padding: 10px;
+            background-color: var(--light-gray);
+            border-radius: 4px;
+        }
+        
+        /* 打印按钮 */
+        .print-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Noto Sans SC', sans-serif;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 打印样式 */
+        @media print {
+            body {
+                background-color: white;
+            }
+            
+            .a4-page {
+                box-shadow: none;
+                margin: 0;
+                padding: 10mm;
+                width: 210mm;
+                height: 297mm;
+            }
+            
+            .crop-marks {
+                display: none;
+            }
+            
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="a4-page crop-marks">
+        <div class="city-icons">
+            <span class="city-icon"><i class="fas fa-landmark"></i></span>
+            <span class="city-icon"><i class="fas fa-mountain"></i></span>
+        </div>
+        
+        <header class="header">
+            <h1 class="title">成都-重庆四天三晚旅行规划表</h1>
+            <div class="subtitle">
+                <span><i class="far fa-calendar-alt"></i> 2025年4月16日-19日</span>
+                <span><i class="fas fa-user"></i> 自由行</span>
+                <span><i class="fas fa-map-marker-alt"></i> 成都-重庆</span>
+            </div>
+        </header>
+        
+        <section class="weather-summary">
+            <div class="weather-day">
+                <div class="weather-date">4月16日</div>
+                <div class="weather-icon"><i class="fas fa-cloud"></i></div>
+                <div class="weather-temp">成都 16-30°C 阴</div>
+            </div>
+            <div class="weather-day">
+                <div class="weather-date">4月17日</div>
+                <div class="weather-icon"><i class="fas fa-sun"></i></div>
+                <div class="weather-temp">成都 17-34°C 晴</div>
+            </div>
+            <div class="weather-day">
+                <div class="weather-date">4月18日</div>
+                <div class="weather-icon"><i class="fas fa-cloud-rain"></i></div>
+                <div class="weather-temp">重庆 20-32°C 中雨</div>
+            </div>
+            <div class="weather-day">
+                <div class="weather-date">4月19日</div>
+                <div class="weather-icon"><i class="fas fa-sun"></i></div>
+                <div class="weather-temp">重庆 21-29°C 晴</div>
+            </div>
+        </section>
+        
+        <section class="overview">
+            <h3 class="overview-title">行程概览</h3>
+            <div class="overview-grid">
+                <div class="overview-day">
+                    <div class="overview-day-title">Day 1 - 成都市区</div>
+                    <ul class="overview-day-content">
+                        <li><i class="fas fa-shopping-bag" style="color:var(--sight-color)"></i> 春熙路/太古里</li>
+                        <li><i class="fas fa-monument" style="color:var(--sight-color)"></i> 锦里古街/武侯祠</li>
+                        <li><i class="fas fa-utensils" style="color:var(--food-color)"></i> 成都地道小吃</li>
+                        <li><i class="fas fa-moon" style="color:var(--sight-color)"></i> 宽窄巷子夜游</li>
+                    </ul>
+                </div>
+                <div class="overview-day">
+                    <div class="overview-day-title">Day 2 - 成都郊区</div>
+                    <ul class="overview-day-content">
+                        <li><i class="fas fa-paw" style="color:var(--sight-color)"></i> 大熊猫基地</li>
+                        <li><i class="fas fa-book" style="color:var(--sight-color)"></i> 杜甫草堂</li>
+                        <li><i class="fas fa-ship" style="color:var(--sight-color)"></i> 锦江夜游</li>
+                        <li><i class="fas fa-utensils" style="color:var(--food-color)"></i> 川菜美食体验</li>
+                    </ul>
+                </div>
+                <div class="overview-day">
+                    <div class="overview-day-title">Day 3 - 成都→重庆</div>
+                    <ul class="overview-day-content">
+                        <li><i class="fas fa-train" style="color:var(--transport-color)"></i> 乘高铁前往重庆</li>
+                        <li><i class="fas fa-landmark" style="color:var(--sight-color)"></i> 解放碑商圈</li>
+                        <li><i class="fas fa-building" style="color:var(--sight-color)"></i> 洪崖洞</li>
+                        <li><i class="fas fa-utensils" style="color:var(--food-color)"></i> 重庆火锅</li>
+                    </ul>
+                </div>
+                <div class="overview-day">
+                    <div class="overview-day-title">Day 4 - 重庆深度游</div>
+                    <ul class="overview-day-content">
+                        <li><i class="fas fa-store" style="color:var(--sight-color)"></i> 磁器口古镇</li>
+                        <li><i class="fas fa-subway" style="color:var(--sight-color)"></i> 李子坝轻轨站</li>
+                        <li><i class="fas fa-mountain" style="color:var(--sight-color)"></i> 山城步道</li>
+                        <li><i class="fas fa-plane-departure" style="color:var(--transport-color)"></i> 返程</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        
+        <section class="timeline-container">
+            <h3 class="overview-title">详细行程</h3>
+            <table class="timeline">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>活动</th>
+                        <th>地点</th>
+                        <th>详情</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="time-cell" colspan="4"><strong>Day 1: 成都市区游</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">上午</td>
+                        <td class="activity-cell"><span class="tag tag-hotel">住宿</span> 到达入住</td>
+                        <td class="location-cell">春熙路/太古里附近酒店</td>
+                        <td class="detail-cell">经济型酒店 200-300元/晚</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">12:00-14:00</td>
+                        <td class="activity-cell"><span class="tag tag-food">美食</span> 午餐</td>
+                        <td class="location-cell">春熙路美食街</td>
+                        <td class="detail-cell">担担面20元，龙抄手25元</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">14:00-17:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 锦里古街+武侯祠</td>
+                        <td class="location-cell">武侯祠地铁站</td>
+                        <td class="detail-cell">武侯祠50元/人，锦里古街免费</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">18:00-21:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 宽窄巷子夜游</td>
+                        <td class="location-cell">宽窄巷子地铁站</td>
+                        <td class="detail-cell">免费，品茗茶馆约50元/人</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="time-cell" colspan="4"><strong>Day 2: 成都郊区游</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">08:00-11:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 大熊猫基地</td>
+                        <td class="location-cell">熊猫大道1375号</td>
+                        <td class="detail-cell">门票58元/人，建议早上去</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">12:00-13:30</td>
+                        <td class="activity-cell"><span class="tag tag-food">美食</span> 午餐</td>
+                        <td class="location-cell">基地附近农家乐</td>
+                        <td class="detail-cell">人均40-60元</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">14:00-16:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 杜甫草堂</td>
+                        <td class="location-cell">青华路37号</td>
+                        <td class="detail-cell">门票50元/人</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">19:00-20:30</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 锦江夜游</td>
+                        <td class="location-cell">东门大桥附近</td>
+                        <td class="detail-cell">60-80元/人</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="time-cell" colspan="4"><strong>Day 3: 成都→重庆，重庆市区游</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">08:00-10:00</td>
+                        <td class="activity-cell"><span class="tag tag-transport">交通</span> 成都→重庆</td>
+                        <td class="location-cell">成都东站→重庆西站</td>
+                        <td class="detail-cell">高铁约2小时，200-300元</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">12:00-14:00</td>
+                        <td class="activity-cell"><span class="tag tag-food">美食</span> 午餐+逛街</td>
+                        <td class="location-cell">解放碑商圈</td>
+                        <td class="detail-cell">八一路小面20-30元</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">15:00-19:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 洪崖洞+夜景</td>
+                        <td class="location-cell">嘉陵江滨江路88号</td>
+                        <td class="detail-cell">免费，傍晚灯光亮起最美</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">20:00-21:30</td>
+                        <td class="activity-cell"><span class="tag tag-hotel">住宿</span> 入住酒店</td>
+                        <td class="location-cell">解放碑/洪崖洞附近</td>
+                        <td class="detail-cell">经济型酒店250-350元/晚</td>
+                    </tr>
+                    
+                    <tr>
+                        <td class="time-cell" colspan="4"><strong>Day 4: 重庆深度游，返程</strong></td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">09:00-12:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 磁器口古镇</td>
+                        <td class="location-cell">磁器口地铁站</td>
+                        <td class="detail-cell">免费，品尝陈麻花、毛血旺</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">13:00-16:00</td>
+                        <td class="activity-cell"><span class="tag tag-sight">景点</span> 李子坝+山城步道</td>
+                        <td class="location-cell">李子坝地铁站</td>
+                        <td class="detail-cell">轻轨穿楼奇观，免费</td>
+                    </tr>
+                    <tr>
+                        <td class="time-cell">17:00-</td>
+                        <td class="activity-cell"><span class="tag tag-transport">交通</span> 返程</td>
+                        <td class="location-cell">重庆江北机场/火车站</td>
+                        <td class="detail-cell">提前3小时/1.5小时到达</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        
+        <section class="footer">
+            <div class="info-box">
+                <div class="info-box-title"><i class="fas fa-hotel"></i> 住宿推荐</div>
+                <ul>
+                    <li><strong>成都</strong>：春熙路/太古里附近（200-300元/晚）</li>
+                    <li>推荐：如家/7天连锁酒店，交通便利</li>
+                    <li><strong>重庆</strong>：解放碑/洪崖洞附近（250-350元/晚）</li>
+                    <li>推荐：亚朵/桔子精品酒店，可选江景房</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-box-title"><i class="fas fa-utensils"></i> 美食推荐</div>
+                <ul>
+                    <li><strong>成都特色</strong>：担担面、龙抄手、火锅、兔头</li>
+                    <li><strong>重庆特色</strong>：小面、毛血旺、山城辣子鸡</li>
+                    <li><strong>人均预算</strong>：50-80元/餐</li>
+                    <li><strong>推荐餐厅</strong>：成都玉林串串，重庆洪崖洞陶然居</li>
+                </ul>
+            </div>
+            
+            <div class="info-box">
+                <div class="info-box-title"><i class="fas fa-subway"></i> 交通信息</div>
+                <ul>
+                    <li><strong>城市间</strong>：成都东→重庆西，高铁约2小时</li>
+                    <li><strong>成都市内</strong>：地铁1/2/3/4号线覆盖主要景点</li>
+                    <li><strong>重庆市内</strong>：轨道交通便捷，注意山城坡路多</li>
+                    <li><strong>交通卡</strong>：可购买天府通/渝州通一卡通</li>
+                </ul>
+            </div>
+        </section>
+        
+        <section class="important-info">
+            <div class="tips-list">
+                <div class="info-box-title"><i class="fas fa-info-circle"></i> 重要提示</div>
+                <ul>
+                    <li>成都重庆温差大，带好外套，备雨伞（4月18日重庆有雨）</li>
+                    <li>熊猫基地建议上午参观，熊猫活跃时间为8:00-10:00</li>
+                    <li>重庆山路多坡度大，穿舒适防滑鞋</li>
+                    <li>锦里/宽窄巷子游客多，注意看管随身物品</li>
+                    <li>预算：交通约400元，住宿约850元，餐饮约700元，门票约200元，总计2550元/人</li>
+                </ul>
+            </div>
+            
+            <div class="emergency-list">
+                <div class="info-box-title"><i class="fas fa-phone"></i> 紧急电话</div>
+                <ul>
+                    <li>报警: 110</li>
+                    <li>急救: 120</li>
+                    <li>成都旅游: 028-12301</li>
+                    <li>重庆旅游: 023-12301</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+    
+    <button class="print-button" onclick="window.print()">
+        <i class="fas fa-print"></i> 打印行程表
+    </button>
+    
+    <script>
+        // 设置打印按钮功能
+        document.querySelector('.print-button').addEventListener('click', function() {
+            window.print();
+        });
+    </script>
+</body>
+</html> 
